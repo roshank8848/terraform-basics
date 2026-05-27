@@ -6,9 +6,10 @@ on:
       terraform_action:
         description: 'Select action to perform'
         required: true
-        default: 'apply'
+        default: 'plan'
         type: choice
         options:
+          - plan
           - apply
           - destroy
 
@@ -41,10 +42,14 @@ jobs:
       - name: terraform format check
         run: terraform fmt -check
       
+      - name: terraform plan
+        if: ${{ github.event.inputs.terraform_action == 'plan' }}
+        run: terraform plan -no-color
+
       - name: terraform action
         if: ${{ github.event.inputs.terraform_action == 'apply' }}
-        run: terraform apply --auto-approve
+        run: terraform apply -auto-approve
 
       - name: terraform destroy
         if: ${{ github.event.inputs.terraform_action == 'destroy' }}
-        run: terraform destroy --auto-approve
+        run: terraform destroy -auto-approve
