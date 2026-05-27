@@ -13,7 +13,7 @@ output "public_server_ip" {
   value       = aws_instance.public_instance_server.public_ip
 
 }
-# output "rds_endpoint" {
-#   description = "The endpoint connection string for the RDS PostgreSQL database"
-#   value       = aws_db_instance.postgres_db.endpoint
-# }
+output "rds_endpoint" {
+  description = "The endpoint connection string for the RDS PostgreSQL database"
+  value       = aws_db_instance.postgres_db.endpoint
+}
