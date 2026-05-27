@@ -132,11 +132,11 @@ resource "aws_security_group" "private_sg" {
   }
 
   ingress {
-    description = "allow icmp ping from public VM"
-    from_port = -1
-    to_port = -1
-    protocol = "icmp"
-    security_groups = [ aws_security_group.public_sg.id ]
+    description     = "allow icmp ping from public VM"
+    from_port       = -1
+    to_port         = -1
+    protocol        = "icmp"
+    security_groups = [aws_security_group.public_sg.id]
   }
 
   egress {

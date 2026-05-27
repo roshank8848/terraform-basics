@@ -10,8 +10,8 @@ output "private_vm_private_ip" {
 
 output "public_server_ip" {
   description = "The public ip address of the server"
-  value = aws_instance.public_instance_server.public_ip
-  
+  value       = aws_instance.public_instance_server.public_ip
+
 }
 # output "rds_endpoint" {
 #   description = "The endpoint connection string for the RDS PostgreSQL database"

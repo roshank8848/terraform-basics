@@ -9,7 +9,15 @@ terraform {
       version = "4.3.0"
     }
   }
+  backend "s3" {
+    bucket  = "amzn-random-s3-bucket"
+    key     = "vpc/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
 }
+
+
 
 provider "aws" {
   default_tags {

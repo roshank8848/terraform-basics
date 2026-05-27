@@ -1,0 +1,50 @@
+name: "Terrafrom Deployment"
+
+on:
+  workflow_dispatch:
+    inputs:
+      terraform_action:
+        description: 'Select action to perform'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
+
+
+jobs:
+  terraform:
+    name: "terraform manual run"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v6
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.14.6"
+      
+      - name: terraform init
+        run: terraform init
+      
+      - name: terraform format check
+        run: terraform fmt -check
+      
+      - name: terraform action
+        if: ${{ github.event.inputs.terraform_action = 'apply' }}
+        run: terraform apply --auto-approve
+
+      - name: terraform destroy
+        if: ${{ github.event.inputs.terraform_action = 'destroy' }}
+        run: terraform destroy --auto-approve
