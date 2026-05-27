@@ -43,7 +43,7 @@ jobs:
         run: terraform fmt -check
       
       - name: terraform plan
-        if: ${{ github.event.inputs.terraform_action == 'plan' }}
+        if: ${{ github.event.inputs.terraform_action == 'plan' || github.event.inputs.terraform_action == 'apply' }}
         run: terraform plan -no-color
 
       - name: terraform action
