@@ -49,7 +49,7 @@ jobs:
 
       - name: select or create workspace
         run: |
-          terraform workspace select ${{ github.event.inputs.workspace }} || terraform workspace new ${{ github.event.inputs.workspace }}
+          terraform workspace select -or-create ${{ github.event.inputs.workspace }} 
       - name: terraform format check
         run: terraform fmt -check
       
