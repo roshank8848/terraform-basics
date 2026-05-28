@@ -22,6 +22,6 @@ output "web_server_ip" {
   value = module.compute.public_ip
 }
 
-output "database_endpoint" {
-  value = module.rds.rds_endpoint
-}
+# output "database_endpoint" {
+#   value = module.rds.rds_endpoint
+# }

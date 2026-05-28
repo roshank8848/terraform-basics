@@ -29,6 +29,13 @@ resource "aws_subnet" "private" {
   tags              = { Name = "${var.environment}-private-${count.index + 1}" }
 }
 
+resource "aws_db_subnet_group" "rds" {
+  name       = "${var.environment}-rds-subnet-group"
+  subnet_ids = aws_subnet.private[*].id # Uses your private subnet IDs automatically
+
+  tags = { Name = "${var.environment}-rds-subnet-group" }
+}
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   route {

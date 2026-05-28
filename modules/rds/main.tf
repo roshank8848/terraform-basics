@@ -1,11 +1,3 @@
-# DB Subnet Group (Restricts RDS to private subnets)
-resource "aws_db_subnet_group" "rds" {
-  name       = "${var.environment}-rds-subnet-group"
-  subnet_ids = var.private_subnet_ids
-
-  tags = { Name = "${var.environment}-rds-subnet-group" }
-}
-
 # Isolated Security Group for RDS
 resource "aws_security_group" "rds_sg" {
   name        = "${var.environment}-rds-sg"
@@ -18,7 +10,7 @@ resource "aws_security_group" "rds_sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [var.vpc_id]
+    cidr_blocks = [data.aws_vpc.selected.cidr_block]
   }
 
   egress {
@@ -29,6 +21,10 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = { Name = "${var.environment}-rds-sg" }
+}
+
+data "aws_vpc" "selected" {
+  id = var.vpc_id
 }
 
 # Free-Tier AWS RDS PostgreSQL Instance
@@ -45,7 +41,7 @@ resource "aws_db_instance" "postgres_db" {
   username = var.db_username
   password = var.db_password
 
-  db_subnet_group_name   = aws_db_subnet_group.rds.name
+  db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   skip_final_snapshot    = true
   publicly_accessible    = false

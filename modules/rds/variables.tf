@@ -7,16 +7,6 @@ variable "vpc_id" {
   type        = string
   description = "The ID of the VPC where RDS will reside"
 }
-# Remove public_sg_id and add this:
-variable "vpc_cidr" {
-  type        = string
-  description = "The CIDR block of the VPC to allow database access"
-}
-
-variable "private_subnet_ids" {
-  type        = list(string)
-  description = "List of private subnet IDs for the DB subnet group"
-}
 
 variable "database_name" {
   type    = string
@@ -31,4 +21,9 @@ variable "db_username" {
 variable "db_password" {
   type      = string
   sensitive = true # Marks the password as sensitive in console outputs
+}
+
+variable "db_subnet_group_name" {
+  type        = string
+  description = "The database subnet group name passed from the VPC module"
 }
