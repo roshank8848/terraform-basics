@@ -6,9 +6,9 @@ resource "aws_security_group" "rds_sg" {
 
   # Strict firewall rule: Only allow connections on 5432 from the Public VM's Security Group
   ingress {
-    description = "PostgreSQL from Public Web Server"
-    from_port   = 5432
-    to_port     = 5432
+    description = "Mysql from Public Web Server"
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = [data.aws_vpc.selected.cidr_block]
   }
@@ -29,9 +29,9 @@ data "aws_vpc" "selected" {
 
 # Free-Tier AWS RDS PostgreSQL Instance
 resource "aws_db_instance" "postgres_db" {
-  identifier                 = "${var.environment}-postgres"
-  engine                     = "postgres"
-  engine_version             = "16"
+  identifier                 = "${var.environment}-mysql"
+  engine                     = "mysql"
+  engine_version             = "8.0"
   auto_minor_version_upgrade = true
   instance_class             = "db.t3.micro" # AWS Free Tier eligible
   allocated_storage          = 20            # 20 GB (Within 30GB free limit)
