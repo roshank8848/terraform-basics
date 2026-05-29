@@ -69,6 +69,18 @@ resource "aws_instance" "public_vm" {
     host        = self.public_ip
   }
 
+  provisioner "file" {
+    source      = "${path.module}/install_wordpress.sh"
+    destination = "/tmp/install_wordpress.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/install_wordpress.sh",
+      "/tmp/install_wordpress.sh"
+    ]
+  }
+
   # remote-exec executes scripts directly after OS initialization
   #   provisioner "remote-exec" {
   #     inline = [
